@@ -6,4 +6,4 @@ format_transform 文件夹下为两个格式转换工具
 
 gen_uv_img  用于生成模型的UV参数域svg图
 
-![plot](D:\qyk\CAD_Utils\gen_uv_img\plot.svg)
+![plot](https://raw.githubusercontent.com/Yanko-7/CAD_Utils/ce55be950fa603ec6924e3be32225729e19ce876/gen_uv_img/plot.svg?token=ALGZMUOIWDMXMY4HFOYHAB3GVMYF6)
