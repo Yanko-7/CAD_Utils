@@ -3,7 +3,7 @@ use std::fs::File;
 use std::io::{BufRead, BufReader};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let file = File::open("C:/Users/yanko/GME/build/src_acis/test/data.txt")?;
+    let file = File::open("D:/qyk/GME/build/src_acis/test/data.txt")?;
     let reader = BufReader::new(file);
     let mut lines = reader.lines();
     let u = read_interval(&mut lines, "Uinterval:")?;
