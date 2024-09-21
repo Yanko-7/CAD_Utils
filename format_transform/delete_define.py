@@ -8,14 +8,12 @@ DISTANCE = 4
 
 def remove_substrings(input_string):
     """Remove occurrences of 'gme' substrings from the input string."""
-    res = input_string.replace("\"gme\",", "")
-    res = res.replace("AcisOptions", "GmeOptions")
-    res = res.replace("ACIS_DELETE ", "GME_DELETE ")
-    res = res.replace("ACIS_NEW ", "GME_NEW ")
-    res = res.replace("ACIS_DELETE", "GME_DELETE")
-    res = res.replace("API_BEGIN", "__GME_API_BEGIN")
-    res = res.replace("API_END", "__GME_API_END")
-    return res
+    res = input_string.replace(r"\"gme\",", "")
+    res = res.replace(r"AcisOptions", "GmeOptions")
+    res = res.replace(r"ACIS_DELETE", "GME_DELETE")
+    res = res.replace(r"ACIS_NEW", "GME_NEW")
+    res = res.replace(r"ACIS_DELETE", "GME_DELETE")
+
 
 def process_line(content):
     """
@@ -57,8 +55,18 @@ def process_file(file_path):
         lines = file.readlines()
 
     for line in lines:
-        new_line, _ = process_line(line)
-        processed_lines.append(new_line)
+        if "#ifdef FACETER_USE" in line:
+            status = 1
+            continue
+        if status == 1 and "#else" in line:
+            status += 1
+            continue
+        if status == 2 and "#endif" in line:
+            status = 0
+            continue
+        if status != 2:
+            new_line = line
+            processed_lines.append(new_line)
 
     return processed_lines
 
@@ -78,8 +86,8 @@ def process_files_in_directory(directory_path, output_directory):
         if os.path.isfile(file_path) and filename.endswith('.cpp'):
             processed_content = process_file(file_path)
             new_filename = filename
-            if filename.startswith("gme_"):
-                new_filename = filename[len("gme_"):]
+            # if filename.startswith("gme_"):
+            #     new_filename = filename[len("gme_"):]
             new_file_path = os.path.join(output_directory, new_filename)
             with open(new_file_path, 'w', encoding='utf-8') as file:
                 file.writelines(processed_content)
